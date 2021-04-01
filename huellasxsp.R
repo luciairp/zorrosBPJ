@@ -6,13 +6,19 @@ huellas <- read_csv("huellas sp.csv")
 
 datos <- huellas %>% 
   mutate(mes= factor(mes,unique(mes))) %>% 
-  mutate(spmuestreo=factor(spmuestreo, levels = c("c","g")))
+  mutate(spmuestreo=factor(spmuestreo, levels = c("c","g"))) %>% 
+  mutate(estacion=recode(mes, 
+                    `10`="prim",
+                    `9`="prim",
+                    `4`="oto"))
 
-datos
 
+  
 plot(datos$largo, datos$ancho)
 
 ggplot(datos,aes(x= ancho, y = largo , colour = spmuestreo))+
-  geom_point()
+  geom_point()+
+  facet_grid(estacion ~ .)
+  
 
 levels(huellas$mes)
